@@ -1,0 +1,7 @@
+# index:
+#    path: /
+#    controller: App\Controller\MovieController::index
+
+app_logout:
+    path: /logout
+    controller: App_logout

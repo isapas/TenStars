@@ -1,0 +1,24 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Accueil {% endblock %}
+
+{% block pageTitle %}Accueil {% endblock %}
+
+{% block main %}
+
+<div class=" d-flex justify-content-center flex-wrap">
+{% for movie in movies %}
+
+    <div class="card col-sm-3 m-2">
+        <img class="card-img-top" style="height: 250px; width: 100%; display: block;" src="https://lorempixel.com/540/370/" alt="">
+        <div class="card-body">
+            <h5 class="card-title">{{ movie.title }}</h5>
+            <p class="card-text">{{movie.summary}}</p>
+            <a href="{{ path("evaluation", {"id" : movie.id})}}" class="btn btn-primary">Evaluer</a>
+            <a href="{{ path("single", {"id" : movie.id})}}" class="btn btn-primary">Voir</a>
+        </div>
+    </div>
+{% endfor %}
+
+</div>
+{% endblock %}
