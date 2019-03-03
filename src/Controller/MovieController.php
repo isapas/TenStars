@@ -9,10 +9,9 @@ use App\Entity\Movie;
 use App\Entity\User;
 use App\Entity\Evaluation;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use App\Form\EvaluationType;
+
+
 
 
 class MovieController extends AbstractController
@@ -31,7 +30,7 @@ class MovieController extends AbstractController
     }
 
    /**
-     * @Route("/single/{id}", name="single")
+     * @Route("/single/{id}", name="single", requirements={"id"="\d+"}))
      */
     public function show(Movie $movie)
     {        
@@ -53,40 +52,33 @@ class MovieController extends AbstractController
     }
 
     /**
-     * @Route("/evaluation/{id}", name="evaluation")
+     * @Route("/evaluation/{id}", name="evaluation",requirements={"id"="\d+"})
      * @Isgranted("ROLE_USER")
      * @var \App\Entity\User $user
      */
     public function rate(Movie $movie, Request $request)
     {
         $evaluation = new Evaluation();
-        dump($evaluation);
-        $form = $this->createFormBuilder($evaluation)
-            ->add('comment', TextType::class)
-            //trouver comment changer le label dans la vue
-            ->add('grade', IntegerType::class, 
-              [
-              'attr' => ['min' => 0, 'max' =>10]
-              ])
-            ->add('submit', SubmitType::class)
-            ->getForm();
-
+        $form = $this->createForm(EvaluationType::class, $evaluation);
         $form->handleRequest($request);
 
+
         if ($form->isSubmitted() && $form->isValid()) {
-         
+          //accorde l'accès aux users connectés
+          $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
           $evaluation->setMovie($movie);
           $evaluation->setUser($this->getUser());
           $entityManager = $this->getDoctrine()->getManager();
           $entityManager->persist($evaluation);
           $entityManager->flush();
           //addflash
-          return $this->redirectToRoute('index');
+          return $this->redirectToRoute('single',['id'=>$movie->getId()]);
         }
+        
 
         return $this->render('movie/evaluation.html.twig', [
           "movie" => $movie,
-          "form" => $form->createView()
-        ]);
+          'evaluationForm' => $form->createView()
+          ]);
     }
 }

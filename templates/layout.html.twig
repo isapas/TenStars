@@ -1,20 +1,38 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<div class="jumbotron jumbotron-fluid text-center">
+<header class="jumbotron jumbotron-fluid text-center ">
   <div class="container ">
-    <h1 class="display-4">Movie Rating</h1>
-    <p class="lead">Le premier site français pour évaluer les films tout pourris produits par le cinéma français</p>
+    <h1 class="display-3"> 10 stars</h1>
+    <p class="lead">Le premier site français pour évaluer les films produits par le cinéma français</p>
   </div>
-</div>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="nav-link" href="{{path('index')}}">Accueil <span class="sr-only">(current)</span></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <div class="collapse navbar-collapse" id="navbarColor02">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Features</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">About</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
 
-<div class="container-fluid">
+<main class="container-fluid">
+  {% block main %}{% endblock %}
+</main>
 
-{% block main %}{% endblock %}
-</div>
-<div class="jumbotron jumbotron-fluid">
-<div class="container">
-<p class="lead">Si vous êtes un réalisateur français et que vous vous plaigniez des notes attribuées à votre navet, il ne fallait pas produire une telle bouze. XOXO</p>
-</div>
-</div>
+<footer class="jumbotron jumbotron-fluid mb-0">
+  <div class="container">
+    <p class="lead mb-2">Site réalisé (débuggé) par Isabelle Passeniers dans le cadre de la formation développeur Web 2019</p>
+  </div>
+</footer>
 {% endblock %}
